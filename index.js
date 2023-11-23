@@ -29,21 +29,23 @@ class Bulletin {
   readAll = async () => {
     await this._update()
     console.log(`員編：${this._id}有${this._events.length}筆需要閱讀。`)
-    await this._events.forEach(async ({ RU, TX, KeyName }) => {
+    for (const event of this._events) {
+      const { TX, KeyName } = event
       await this._read(KeyName).then(() => {
         console.log(`閱讀:${TX}成功`)
       }).catch(e => {
         console.log(`閱讀:${TX}失敗`)
       })
-    })
+    }
   }
 }
 
 const users = String(argv.users).split(',')
-users.forEach(async (id) => {
+
+for (const id of users) {
   const bulletin = new Bulletin(id)
   await bulletin.readAll()
-})
+}
 
 
 
