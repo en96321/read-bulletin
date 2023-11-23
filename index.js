@@ -31,7 +31,7 @@ class Bulletin {
     this._events.forEach(async ({ RU, TX, KeyName }) => {
       // 有Ru才是能閱讀的佈告
       if(RU) {
-        await this._record(KeyName).then(() => {
+        await this._read(KeyName).then(() => {
           console.log(`閱讀:${TX}成功`)
         }).catch(e => {
           console.log(`閱讀:${TX}失敗`)
