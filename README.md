@@ -24,7 +24,7 @@ crontab -e
 按Ｉ進入INSERT模式 加入一筆
  分      小時     日       月       星期     命令
 ```
-* */24 * * * bun run ~/documents/practice/104-bulletin/index.js --id [員編]
+0 0 * * * bun run ~/documents/practice/104-bulletin/index.js --id [員編]
 ```
 然後存檔(esc > :wq)
 
