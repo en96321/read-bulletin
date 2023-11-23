@@ -15,7 +15,7 @@ class Bulletin {
 
   _update = async () => {
     await Axios.get(`${this._host}/check?ID=${this._id}`).then(({ data: { event, record }}) => {
-      this._events = event.filter(({ KeyName }) => !record.find(({ EventID }) => EventID === KeyName))
+      this._events = event.filter(({ KeyName, RU }) => RU && !record.find(({ EventID }) => EventID === KeyName))
     }).catch(e => {
       console.error('取得佈告欄失敗')
     })
@@ -28,21 +28,23 @@ class Bulletin {
 
   readAll = async () => {
     await this._update()
-    this._events.forEach(async ({ RU, TX, KeyName }) => {
-      // 有Ru才是能閱讀的佈告
-      if(RU) {
-        await this._read(KeyName).then(() => {
-          console.log(`閱讀:${TX}成功`)
-        }).catch(e => {
-          console.log(`閱讀:${TX}失敗`)
-        })
-      }
+    console.log(`員編：${this._id}有${this._events.length}筆需要閱讀。`)
+    await this._events.forEach(async ({ RU, TX, KeyName }) => {
+      await this._read(KeyName).then(() => {
+        console.log(`閱讀:${TX}成功`)
+      }).catch(e => {
+        console.log(`閱讀:${TX}失敗`)
+      })
     })
   }
 }
 
-const bulletin = new Bulletin(argv.id)
-bulletin.readAll()
+const users = String(argv.users).split(',')
+users.forEach(async (id) => {
+  const bulletin = new Bulletin(id)
+  await bulletin.readAll()
+})
+
 
 
 
