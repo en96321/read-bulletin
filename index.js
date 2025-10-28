@@ -47,6 +47,8 @@ for (const id of users) {
   await bulletin.readAll()
 }
 
+console.log('測試')
+
 
 
 
